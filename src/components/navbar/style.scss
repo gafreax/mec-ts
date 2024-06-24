@@ -1,0 +1,20 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    & > * {
+        padding: 8px;
+    }
+}
+
+.search {
+    color: lightgray;
+
+    & > * {
+        color: white !important;
+        justify-content: center;
+    }
+}
+
+.menuButton > svg {
+    fill: white;
+}

@@ -1,0 +1,45 @@
+.cardHeaderMD {
+    span {
+        width: 280px;
+        height: 32px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.cardHeaderXS {
+    span {
+        width: 360px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.card {
+    animation: scaleDown 0.4s ease;
+
+    &:hover {
+        cursor: pointer;
+        animation: scaleUp 0.4s normal forwards;
+    }
+
+    @keyframes scaleDown {
+        from {
+            transform: scale(1.02);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes scaleUp {
+        from {
+            transform: scale(1);
+        }
+        to {
+            transform: scale(1.02);
+        }
+    }
+}
