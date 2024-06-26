@@ -10,7 +10,8 @@ import { Product } from "../../types/Product.types";
 import "./style.scss"
 
 interface Props {
-    product: Product
+    product: Product,
+    setCartItem: (p: Product) => void
 }
 
 const MECCardMedia = styled(CardMedia)`
@@ -18,11 +19,11 @@ const MECCardMedia = styled(CardMedia)`
 `
 const MECCardHeader = styled(CardHeader)`
     & span {
-        text-overflow: ${ props => props.isLong ? 'ellipsis': 'hidden'};
+        text-overflow: ${ props => props.islong === "yes" ? 'ellipsis': 'hidden'};
     }
 `
 
-function ProductCard({ product }: Props) {
+function ProductCard({ product, setCartItem }: Props) {
     
     const theme = useTheme()
     const { title, description, thumbnail } = product
@@ -30,7 +31,7 @@ function ProductCard({ product }: Props) {
     const headerCardClassName = isMD ? "cardHeaderMD" : "cardHEaderXs"
 
     return <Card className="card" sx={{ height:{xs:"420px", md:"600px"} }}>
-        <MECCardHeader title={title} className={headerCardClassName} isLong={title?.length > 22} />
+        <MECCardHeader title={title} className={headerCardClassName} islong={title?.length > 22 ? "yes": "no"} />
         <MECCardMedia component="img" 
             image={thumbnail}
             alt={title}
@@ -39,7 +40,7 @@ function ProductCard({ product }: Props) {
             <Typography>{description}</Typography>
         </CardContent>
         <CardActions>
-            <Button>
+            <Button onClick={() => setCartItem(product)}>
                 <ShoppingBasket color="primary" sx={{ marginRight: "4px"}}/> Aggiungi
             </Button>
         </CardActions>
