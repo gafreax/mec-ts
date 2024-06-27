@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material"
 import { ShoppingBasket, RemoveCircle } from "@mui/icons-material"
 
@@ -7,33 +7,30 @@ import Produtcs from "../components/products";
 
 import { Product } from "../types/Product.types"
 
-async function fetchProducts(setProducts: (products: Product[]) => void) {
+interface FetchProductsInterface {
+    setProducts: (products: Product[] ) => void
+}
+
+async function fetchProducts( { setProducts }: FetchProductsInterface ) {
     const response = await fetch("https://dummyjson.com/products")
     const data = await response.json()
-
     setProducts(data.products)
 }
 
-
 function Home() {
-    const [open, setOpen] = useState(false)
-    const [search, setSearch] = useState('')
-    const [products, setProducts] = useState([])
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-    const [cart, setCart] = useState([])
-    const [cartItem, setCartItem] = useState()
+    const [open, setOpen] = useState<boolean>(false)
+    const [search, setSearch] = useState<string>('')
+    const [products, setProducts] = useState<Product[]>([])
+    // const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
+    const [cart, setCart] = useState<Product[]>([])
+    const [cartItem, setCartItem] = useState<Product>()
 
     useEffect(() => {
-        fetchProducts(setProducts)
+        fetchProducts({ setProducts })
         const oldCart = window.localStorage.getItem('cart')
         console.log("first")
         if(oldCart) setCart(JSON.parse(oldCart))
     }, [])
-
-    useEffect(() => {
-        setFilteredProducts(products)
-        console.log("second")
-    }, [products])
 
     useEffect(() => {
         if(cart) {
@@ -47,11 +44,15 @@ function Home() {
         if(cartItem) setCart([...cart, cartItem])
     }, [cartItem])  
 
-    useEffect(() => {
-        setFilteredProducts( 
-            products.filter((p: Product) => p.title.toLowerCase().includes(search.toLowerCase()))
-        )
-    }, [search])
+    // useEffect(() => {
+    //     setFilteredProducts( 
+    //         products.filter((p: Product) => p.title.toLowerCase().includes(search.toLowerCase()))
+    //     )
+    // }, [search])
+
+    const filteredProducts = useMemo(() => {
+        return products.filter( (p: Product) => p.title.toLowerCase().includes(search.toLowerCase()))
+    }, [search, products])
 
     function handleRemoveItem(id: number) {
         setCart(cart.filter((p: Product) => p.id !== id))
