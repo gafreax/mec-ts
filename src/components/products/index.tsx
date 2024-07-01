@@ -8,7 +8,7 @@ interface Props {
     setCartItem: (p: Product) => void
 }
 
-function Produtcs({products, setCartItem}: Props) {
+function Produtcs({ products, setCartItem }: Props) {
 
     return <Grid container spacing={2}>
             { products?.filter(product => product).map(product => 
