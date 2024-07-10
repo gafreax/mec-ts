@@ -1,6 +1,5 @@
 import { ShoppingBasket } from "@mui/icons-material"
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material"
-// import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles';
@@ -41,7 +40,7 @@ function ProductCard({ product, setCartItem }: Props) {
         </CardContent>
         <CardActions>
             <Button onClick={() => setCartItem(product)}>
-                <ShoppingBasket color="primary" sx={{ marginRight: "4px"}}/> Aggiungi
+                <ShoppingBasket color="primary" sx={{ marginRight: "16px"}}/> Aggiungi
             </Button>
         </CardActions>
     </Card>
