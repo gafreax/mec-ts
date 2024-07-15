@@ -1,16 +1,23 @@
-import { createContext } from "react"
-import { User } from "../types/User.types"
+import { createContext, useState } from "react"
+import { User, UserContext } from "../types/User.types"
 
 interface Props {
     children: JSX.Element
 }
 
-const UserContext = createContext<User | undefined>(undefined)
+const initalUser: User = {
+    username: 'guest',
+    logged: false
+}
+
+export const CurrentUserContext = createContext<UserContext>({})
 
 function BaseContext({children}: Props) {
-    return <UserContext.Provider value={undefined}>
+    const [user, setUser] = useState<User>(initalUser)
+    
+    return <CurrentUserContext.Provider value={{ user, setUser }}>
         {children}
-    </UserContext.Provider>
+    </CurrentUserContext.Provider>
 }
 
 export default BaseContext

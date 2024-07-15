@@ -2,14 +2,14 @@ import { Grid } from "@mui/material"
 import Navbar from "../components/navbar"
 
 interface Props {
-    children: JSX.Element,
+    children: JSX.Element[] | JSX.Element,
     setSearch?: (p: string) => void,
     setDrawerOpen?: (p: boolean) => void
 }
 
 function Base({children, setSearch, setDrawerOpen }: Props) {
 
-    return <Grid container spacing={2} fixed="true">
+    return <Grid container spacing={2}>
         <Grid item xs={12}>
             <Navbar setDrawerOpen={setDrawerOpen} setSearch={setSearch}/>
         </Grid>

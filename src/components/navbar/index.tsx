@@ -1,16 +1,16 @@
 import { ChangeEvent, useContext } from "react"
-import { AppBar, Button, TextField, Toolbar, Typography } from "@mui/material"
-import { ShoppingBasket as ShoppingBasketIcon, Login as LoginIcon, Logout as LogoutIcon, Home as HomeIcon } from "@mui/icons-material"
+import { AppBar, TextField, Toolbar, Typography } from "@mui/material"
+import { Link } from "react-router-dom"
+import { Home as HomeIcon } from "@mui/icons-material"
 
 import './style.scss'
-import { Link } from "react-router-dom"
-import { UserContext } from "../../context/BaseContext"
-const menuItemSyle = {
-    color: "white",
-    marginLeft: "16px",
-}
+import { CurrentUserContext } from "../../context/BaseContext"
+import LoginButtonSection from "./LoginButtonSection"
+import LogoutButtonSection from "./LogoutButtonSection"
+import CartButtonSection from "./CartButtonSection"
 
-const displayOnlyOnMedium = {
+
+export const displayOnlyOnMedium = {
     color: "white",
     marginLeft: "16px",
     display: {
@@ -44,44 +44,34 @@ interface Props {
 type SearchChangeEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 
 function Navbar({ setDrawerOpen, setSearch }: Props) {
-    const user = useContext(UserContext)
+    const { user, setUser } = useContext(CurrentUserContext)
 
     function handleSearch(event: SearchChangeEvent) {
         if(!setSearch || event.currentTarget.value.length < 3) return
         setSearch(event.currentTarget.value)
     }
+
     function handleShoppingBasketClick() {
-        () => setDrawerOpen && setDrawerOpen(true)
+        setDrawerOpen && setDrawerOpen(true)
+    }
+
+    function handleLogout() {
+        setUser && setUser(user => ({ ...user, logged: false }))
     }
 
     return <AppBar position="static">
         <Toolbar className="toolbar">
-            { user ? 
-                <Button className="menuButton" onClick={handleShoppingBasketClick}>
-                    <ShoppingBasketIcon />
-                    <Typography variant="body1" sx={displayOnlyOnMedium}>
-                        Carrello
-                    </Typography>
-                </Button>
-            :
-                <Link to='/login'>
-                    <Button className="menuButton">
-                        <LoginIcon />
-                        <Typography variant="body1" sx={menuItemSyle}>
-                            Login
-                        </Typography>
-                    </Button>
-                </Link>
-            }
+            <CartButtonSection logged={user?.logged} shoppingBasketClick={handleShoppingBasketClick} />
+            <LoginButtonSection logged={user?.logged} />
+
             { setSearch && <TextField onChange={handleSearch} placeholder="Cerca..." size="small" className="search" sx={searchFieldSize}/>}
-            <Link to='/home'>
+            <Link to='/home' style={{ textDecoration: "none"}}>
                 <HomeIcon sx={displayOnlyOnSmall}/>
-                <Typography variant="h6" sx={displayOnlyOnMedium}>Musa eCommerce</Typography>
+                <Typography variant="h6" sx={displayOnlyOnMedium}>
+                    Musa eCommerce
+                </Typography>
             </Link>
-            { user &&  <Button className="menuButton">
-                <LogoutIcon />
-            </Button>
-            }
+            <LogoutButtonSection logout={handleLogout} logged={user?.logged} />
         </Toolbar>
     </AppBar>
 }
